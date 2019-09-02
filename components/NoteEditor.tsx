@@ -1,56 +1,60 @@
-import '../styles/components/NoteEditor.scss'
 import { FunctionComponent, useEffect, useRef, createElement } from 'react'
-import { MdFormatBold, MdFormatItalic } from 'react-icons/md'
-import { IconType } from 'react-icons/lib/cjs'
 import Scrollbar from 'react-scrollbars-custom'
-import { MakeBold, MakeItalic, EditorCommand } from '../src/Editor'
+// Icons
+import { MdFormatBold, MdFormatItalic, MdFormatUnderlined, MdFormatListBulleted } from 'react-icons/md'
+import { IconType } from 'react-icons/lib/cjs'
+// Editor related
+import { EditorCommand, MakeBold, MakeItalic, MakeUnderlined, MakeUList } from '../src/EditorCommands'
+import Control from './Editor/Control'
+import '../styles/components/NoteEditor.scss'
 
 const NoteEditor: FunctionComponent = () => {
   const editorControlsRef = useRef<HTMLDivElement>(null) // Reference to the editor controls
   const editorRef = useRef<HTMLDivElement>(null) // Reference to the editor element
 
+  // Mount
   useEffect(() => {
     const editor = editorRef.current!
     editor.contentEditable = 'true' // Make the content editable
+    document.execCommand('defaultParagraphSeparator', false, 'p') // Default separator
+
+    // Create a mutation observer for the editor
+    const callback: MutationCallback = (mutations) => {
+      for (let mutation of mutations) {
+        mutation.addedNodes.forEach(node => {
+          if (node.nodeName === 'LI') {
+            // Make sure it doesnt have a checked class and add an event listener
+            (node as HTMLLIElement).style.transition = 'none !important';
+            (node as HTMLLIElement).classList.remove('checked')
+            node.addEventListener('click', () => (node as HTMLLIElement).classList.toggle('checked'))
+          }
+        })
+      }
+    }
+    const observer: MutationObserver = new MutationObserver(callback)
+    observer.observe(editor, { childList: true, subtree: true })
   }, [])
 
   return (
     <div className="editor-container">
       <div className="editor-controls" ref={ editorControlsRef }>
-        { CreateControls() }
+        <Control icon={ MdFormatBold } command={ MakeBold } tooltip="Bold" selectOnly />
+        <Control icon={ MdFormatItalic } command={ MakeItalic } tooltip="Italic" selectOnly />
+        <Control icon={ MdFormatUnderlined } command={ MakeUnderlined } tooltip="Underline" selectOnly />
+        <Control icon={ MdFormatListBulleted } command={ MakeUList } tooltip="Checklist" />
       </div>
       <Scrollbar className="editor-scrollbar">
-        <div className="editor" ref={ editorRef }></div>
+        <div
+          className="editor"
+          id="editor"
+          ref={ editorRef }
+          onFocus={() => editorRef.current!.classList.add('focused')}
+          onBlur={() => editorRef.current!.classList.remove('focused')}
+        >
+        </div>
       </Scrollbar>
     </div>
   )
-}
-
-// An array of all editor controls
-interface Control {
-  icon: IconType
-  command: EditorCommand
-  tooltip?: string
-}
-
-const EditorControls: Array<Control> = [
-  { icon: MdFormatBold, command: MakeBold, tooltip: 'Bold' },
-  { icon: MdFormatItalic, command: MakeItalic, tooltip: 'Italic' },
-]
-
-// Function which creates the editor control elements
-const CreateControls = (): Array<JSX.Element> => {
-  // Loop through the array of controls and output them
-  return EditorControls.map((control, index) => (
-    <button
-      key={ index }
-      className="editor-controls-item"
-      data-tooltip={ control.tooltip }
-      onClick={ control.command }
-    >
-      { createElement(control.icon, { className: 'editor-controls-icon' }) }
-    </button>
-  ))
 }
 
 export default NoteEditor

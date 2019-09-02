@@ -18,64 +18,6 @@ $controls-height: 75px;
   height: $controls-height;
   border-radius: $radius;
   box-shadow: $card-shadow;
-
-  $icon-size: 45px;
-  $icon-color: #353535;
-  // Each control
-  &-item {
-    // Override button styles
-    border: none;
-    background: none;
-    padding: 0;
-    cursor: pointer;
-    
-    // Tooltip
-    position: relative;
-    &::before {
-      position: absolute;
-      content: attr(data-tooltip);
-      background: $icon-color;
-      color: white;
-      font-size: 0.8rem;
-      padding: 5px 10px;
-      border-radius: 6px;
-      top: -32px;
-      // Center horizontally
-      left: 50%;
-      transform: translateX(-50%) translateY(-5px);
-      opacity: 0;
-      transition: 300ms ease-in-out;
-      
-    }
-    &:hover::before {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0px);
-    }
-    
-    // Space out the controls
-    margin-right: 10px;
-    &:last-of-type {
-      margin-right: 0;
-    }
-  }
-  
-  // Each icon
-  &-icon {
-    height: $icon-size;
-    width: $icon-size;
-    display: block; // Removes unnecessary height
-    padding: 10px;
-    border-radius: 100px; // Fully rounded
-    // Colors
-    background: $app-background;
-    fill: $icon-color;
-
-    // Hover effect
-    transition: 200ms ease-in-out;
-    &:hover {
-      background: #ebebeb;
-    }
-  }
 }
 
 .editor {
@@ -91,4 +33,46 @@ $controls-height: 75px;
   padding-right: 50px;
   background: white;
   box-shadow: $card-shadow;
+  // Font
+  color: $text-normal;
+  font-size: 1.1rem;
+
+  // How to style specific elements found in the editor
+  ul {
+    list-style: none; // We will have custom checkbox with ::before
+    padding: 0;
+
+    li {
+      margin: 10px 0;
+      padding-left: 30px;
+      position: relative;
+      // Only emit a click event when the checkbox is pressed
+      pointer-events: none;
+
+      // The checkbox
+      &::before {
+        pointer-events: all;
+        // Positioning
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: '';
+        cursor: pointer;
+        height: 22px;
+        width: 22px;
+        background: #cccccc;
+        
+        // Animation
+        transition: 300ms ease-out;
+      }
+
+      // Strikethrough the text when the checkbox is checked and changed the color
+      &.checked {
+        text-decoration: line-through;
+        &::before {
+          background: $primary;
+        }
+      }
+    }
+  }
 }
