@@ -1,0 +1,11 @@
+.all-notes {
+  
+  // Space out all note cards
+  .note-card {
+    margin-bottom: 15px;
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+}

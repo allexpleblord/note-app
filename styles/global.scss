@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap');
+
+html {
+  background: $app-background;
+  font-family: Roboto, Avenir, sans-serif;
+  font-weight: 400;
+}
+html, body {
+  margin: 0;
+}
+* {
+  box-sizing: border-box;
+}
+
+
+// Custom scrollbar styles
+.ScrollbarsCustom-Track {
+  width: 7px !important;
+}
+.editor-scrollbar { // The scrollbar on the note editor
+  .ScrollbarsCustom-Wrapper {
+    border-radius: $radius !important;
+    right: 0px !important;
+  }
+  .ScrollbarsCustom-Track {
+    top: 20px !important;
+    right: 15px !important;
+    height: calc(100% - 40px) !important;
+  }
+}

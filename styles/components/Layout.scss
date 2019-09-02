@@ -1,0 +1,11 @@
+.layout {
+  // Containerize
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100vh;
+  padding: 15vh 25px;
+  // Make it a grid
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-gap: 25px;
+}

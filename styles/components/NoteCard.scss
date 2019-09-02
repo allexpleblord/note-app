@@ -1,0 +1,23 @@
+$spacing: 9px; // Between the title and the date
+
+.note-card {
+  cursor: pointer;
+  background-color: white;
+  max-width: 340px;
+  width: 100%;
+  padding: 24px 32px;
+  border-radius: $radius;
+  box-shadow: $card-shadow;
+
+  &-title {
+    margin: 0 0 $spacing 0;
+    font-size: 1.26rem;
+    font-weight: 500;
+    color: $text-normal;
+  }
+  &-date {
+    margin: 0;
+    font-size: 0.95rem;
+    color: $text-light;
+  }
+}
