@@ -23,6 +23,10 @@ $controls-height: 75px;
   $icon-color: #353535;
   // Each control
   &-item {
+    // Override button styles
+    border: none;
+    background: none;
+    padding: 0;
     cursor: pointer;
     
     // Tooltip
@@ -73,6 +77,7 @@ $controls-height: 75px;
     }
   }
 }
+
 .editor {
   // Padding is 15vh on both sides so 70vh of height left minus the height that
   // the editor controls take up.
