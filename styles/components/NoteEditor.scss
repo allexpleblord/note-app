@@ -26,7 +26,8 @@ $controls-height: 75px;
   // Have no idea where those 7 pixels came from but it is perfect this way.
   min-height: calc(70vh - #{$space-between + $controls-height - 7px});
 
-  outline: none;  
+  outline: none;
+  user-select: none;
   border-radius: $radius;
   width: 100%;
   padding: 45px;
@@ -37,38 +38,51 @@ $controls-height: 75px;
   color: $text-normal;
   font-size: 1.1rem;
 
-  // How to style specific elements found in the editor
-  ul {
-    list-style: none; // We will have custom checkbox with ::before
-    padding: 0;
+  /// How to style specific elements found in the editor
 
+  // General ul, ol
+  ul, ol {
+    padding: 0 0 0 20px;
     li {
-      margin: 10px 0;
-      padding-left: 30px;
-      position: relative;
-      // Only emit a click event when the checkbox is pressed
-      pointer-events: none;
+      margin: 5px 0;
+    }
+  }
 
-      // The checkbox
+  // A checklist
+  .checklist {
+    padding: 0;
+    list-style: none;
+
+    // <li> element
+    .checklist-item {
+      position: relative;
+      padding-left: 30px; // Space away from the check
+      pointer-events: none; // ::before can be clicked, li cannot
+
+      // The ::before acting as a check
       &::before {
-        pointer-events: all;
-        // Positioning
+        pointer-events: all; // ::before can be clicked, li cannot
+        content: '';
+        cursor: pointer;
         position: absolute;
         top: 0;
         left: 0;
-        content: '';
-        cursor: pointer;
-        height: 22px;
-        width: 22px;
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
         background: #cccccc;
-        
-        // Animation
-        transition: 300ms ease-out;
+      }
+      
+      &:active::before {
+        transform: scale(0.9);
       }
 
-      // Strikethrough the text when the checkbox is checked and changed the color
+      // When it is checked
       &.checked {
         text-decoration: line-through;
+        color: $text-light;
+
+        // The check
         &::before {
           background: $primary;
         }

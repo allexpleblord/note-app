@@ -11,14 +11,14 @@ const Home: NextPage = () => {
   return (
     <Layout>
       <Scrollbar className="all-notes">
-        <NoteCard title="Learn to juggle" date="22/08/2019" />
-        <NoteCard title="Learn to juggle" date="22/08/2019" />
-        <NoteCard title="Learn to juggle" date="22/08/2019" />
-        <NoteCard title="Learn to juggle" date="22/08/2019" />
-        <NoteCard title="Learn to juggle" date="22/08/2019" />
-        <NoteCard title="Learn to juggle" date="22/08/2019" />
-        <NoteCard title="Learn to juggle" date="22/08/2019" />
-        <NoteCard title="Learn to juggle" date="22/08/2019" />
+        <NoteCard title="Just a note" date="22/08/2019" />
+        <NoteCard title="Just a note" date="22/08/2019" />
+        <NoteCard title="Just a note" date="22/08/2019" />
+        <NoteCard title="Just a note" date="22/08/2019" />
+        <NoteCard title="Just a note" date="22/08/2019" />
+        <NoteCard title="Just a note" date="22/08/2019" />
+        <NoteCard title="Just a note" date="22/08/2019" />
+        <NoteCard title="Just a note" date="22/08/2019" />
       </Scrollbar>
       <div>
         <NoteEditor />

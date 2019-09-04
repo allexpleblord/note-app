@@ -1,9 +1,13 @@
 import { FunctionComponent, useState, useEffect, useRef, createElement, SyntheticEvent } from 'react'
 import Scrollbar from 'react-scrollbars-custom'
+
 // Icons
-import { MdFormatBold, MdFormatItalic, MdFormatUnderlined, MdFormatListBulleted, MdFormatClear } from 'react-icons/md'
+import { MdFormatBold, MdFormatItalic, MdFormatUnderlined, 
+         MdFormatClear, MdFormatListBulleted, MdFormatListNumbered,
+         MdCheckBox } from 'react-icons/md'
+
 // Editor related
-import { Bold, Italic, Underline, Clear } from '../src/EditorCommands'
+import { Bold, Italic, Underline, Clear, MakeUList, MakeOList, MakeChecklist } from '../src/EditorCommands'
 import ToggleControl from './Controls/ToggleControl'
 import Control from './Controls/Control'
 import '../styles/components/NoteEditor.scss'
@@ -20,6 +24,12 @@ const NoteEditor: FunctionComponent = () => {
   // Mount
   useEffect(() => {
     document.execCommand('defaultParagraphSeparator', false, 'p') // Default separator
+    // Mutation observer
+    const observer = new MutationObserver(observerCallback)
+    observer.observe(editorRef.current!, { subtree: true, childList: true })
+
+    // Effect cleanup
+    return () => observer.disconnect()
   }, [])
 
   // Gets the information about the selection
@@ -73,6 +83,25 @@ const NoteEditor: FunctionComponent = () => {
     }
   }
 
+  // Mutation observer callback
+  const observerCallback: MutationCallback = (mutations, observer) => {
+    for (let mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType !== 1) // If not an actual element
+          return
+
+        const element = node as HTMLElement
+
+        // If its a checklist item <li> remove the checked class if it has one
+        if (element.classList.contains('checklist-item')) {
+          element.classList.add('new')
+          setTimeout(() => {element.classList.remove('new')}, 100)
+          element.classList.remove('checked')
+        }
+      })
+    }
+  }
+
   return (
     <div className="editor-container">
       <div className="editor-controls" ref={ editorControlsRef }>
@@ -80,6 +109,9 @@ const NoteEditor: FunctionComponent = () => {
         <ToggleControl icon={ MdFormatItalic } command={ Italic } tooltip="Italic" selectedElements={selectedElements} />
         <ToggleControl icon={ MdFormatUnderlined } command={ Underline } tooltip="Underline" selectedElements={selectedElements} />
         <Control icon={ MdFormatClear } command={ Clear } tooltip="Clear" />
+        <Control icon={ MdFormatListBulleted } command={ MakeUList } tooltip="Bullet List" />
+        <Control icon={ MdFormatListNumbered } command={ MakeOList } tooltip="Number List" />
+        <Control icon={ MdCheckBox } command={ MakeChecklist } tooltip="Checklist" />
       </div>
       <Scrollbar className="editor-scrollbar">
         <div

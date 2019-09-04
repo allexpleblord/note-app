@@ -69,6 +69,7 @@ $icon-hover: #ebebeb;
   // When you click
   transition: 100ms ease-out;
   &:active {
-    transform: scale(0.93)
+    transform: scale(0.93);
+    box-shadow: $card-shadow;
   }
 }
