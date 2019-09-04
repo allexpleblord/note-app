@@ -3,7 +3,7 @@ $icon-color: #353535;
 $icon-hover: #ebebeb;
 
 // Each control
-.editor-controls-item {
+.control {
   // Override button styles
   border: none;
   background: none;
@@ -14,16 +14,18 @@ $icon-hover: #ebebeb;
   position: relative;
   &::before {
     position: absolute;
-    content: attr(data-tooltip);
-    background: $icon-color;
-    color: white;
-    font-size: 0.8rem;
-    padding: 5px 10px;
-    border-radius: 6px;
     top: -32px;
     // Center horizontally
     left: 50%;
     transform: translateX(-50%) translateY(-5px);
+    content: attr(data-tooltip); // The text is supplied by an attribute
+    background: $icon-color;
+    color: white;
+    font-size: 0.8rem;
+    max-width: 100px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    // Animation related
     opacity: 0;
     transition: 300ms ease-in-out;
     
@@ -40,7 +42,7 @@ $icon-hover: #ebebeb;
   }
 
   // Each icon
-  .editor-controls-icon {
+  .control-icon {
     height: $icon-size;
     width: $icon-size;
     display: block; // Removes unnecessary height
@@ -58,9 +60,15 @@ $icon-hover: #ebebeb;
   }
 
   // When toggled
-  &.toggled {
-    .editor-controls-icon {
+  &.active {
+    .control-icon {
       background: $icon-hover;
     }
+  }
+
+  // When you click
+  transition: 100ms ease-out;
+  &:active {
+    transform: scale(0.93)
   }
 }
